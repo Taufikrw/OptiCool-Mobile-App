@@ -35,6 +35,7 @@ import com.app.opticool.ui.ViewModelFactory
 import com.app.opticool.ui.common.EyeglassesState
 import com.app.opticool.ui.components.EyeglassItem
 import com.app.opticool.ui.components.FeatureBanner
+import com.app.opticool.ui.components.LoadingScreen
 import com.app.opticool.ui.components.SearchBanner
 import com.app.opticool.ui.theme.interFontFamily
 
@@ -54,11 +55,6 @@ fun HomeScreen(
         )
         is EyeglassesState.Error ->  ErrorScreen()
     }
-}
-
-@Composable
-fun LoadingScreen() {
-    Text(text = "LOAFDING")
 }
 
 @Composable

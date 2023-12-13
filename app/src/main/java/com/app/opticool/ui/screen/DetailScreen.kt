@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.app.opticool.data.response.EyeglassesResponseItem
 import com.app.opticool.ui.common.EyeglassState
+import com.app.opticool.ui.components.LoadingScreen
+
 @Composable
 fun DetailScreen(
     uiState: EyeglassState,
