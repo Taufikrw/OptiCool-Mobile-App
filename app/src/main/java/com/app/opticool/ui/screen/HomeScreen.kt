@@ -2,6 +2,7 @@ package com.app.opticool.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,6 +35,7 @@ import com.app.opticool.ui.ViewModelFactory
 import com.app.opticool.ui.common.EyeglassesState
 import com.app.opticool.ui.components.EyeglassItem
 import com.app.opticool.ui.components.FeatureBanner
+import com.app.opticool.ui.components.LoadingScreen
 import com.app.opticool.ui.components.SearchBanner
 import com.app.opticool.ui.theme.interFontFamily
 
@@ -41,21 +43,18 @@ import com.app.opticool.ui.theme.interFontFamily
 fun HomeScreen(
     uiState: EyeglassesState,
     retryAction: () -> Unit,
-    modifier: Modifier = Modifier,
+    navigateToDetail: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     when (uiState) {
         is EyeglassesState.Loading -> LoadingScreen()
         is EyeglassesState.Success -> HomeContent(
             eyeglasses = uiState.eyeglass,
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth(),
+            navigateToDetail = navigateToDetail
         )
         is EyeglassesState.Error ->  ErrorScreen()
     }
-}
-
-@Composable
-fun LoadingScreen() {
-    Text(text = "LOAFDING")
 }
 
 @Composable
@@ -66,8 +65,9 @@ fun ErrorScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeContent(
+    modifier: Modifier = Modifier,
     eyeglasses: List<EyeglassesResponseItem>,
-    modifier: Modifier = Modifier
+    navigateToDetail: (Int) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -96,46 +96,51 @@ fun HomeContent(
             }
         },
     ) { innerPadding ->
-        Column(
+        LazyColumn(
             modifier = modifier
                 .padding(innerPadding)
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
-            FeatureBanner(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-            )
-            Text(
-                text = "Rekomendasi Untukmu",
-                fontFamily = interFontFamily,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier
-                    .padding(16.dp)
-            )
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                contentPadding = PaddingValues(16.dp),
-                modifier = modifier
-                    .background(Color(0xFFF5F5F5))
-            ) {
-                items(items = eyeglasses, key = { it.idEyeglass }) {
-                    EyeglassItem(
-                        name = it.name,
-                        price = it.price,
-                        image = it.linkPic1
-                    )
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+                FeatureBanner(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                )
+                Text(
+                    text = "Rekomendasi Untukmu",
+                    fontFamily = interFontFamily,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier
+                        .padding(16.dp)
+                )
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    contentPadding = PaddingValues(16.dp),
+                    modifier = modifier
+                        .background(Color(0xFFF5F5F5))
+                ) {
+                    items(items = eyeglasses, key = { it.idEyeglass }) {
+                        EyeglassItem(
+                            name = it.name,
+                            price = it.price,
+                            image = it.linkPic1,
+                            modifier = Modifier.clickable {
+                                navigateToDetail(it.idEyeglass)
+                            }
+                        )
+                    }
                 }
+                SearchBanner()
+                Text(
+                    text = "Berdasarkan bentuk wajah",
+                    fontFamily = interFontFamily,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier
+                        .padding(16.dp)
+                )
             }
-            SearchBanner()
-            Text(
-                text = "Berdasarkan bentuk wajah",
-                fontFamily = interFontFamily,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier
-                    .padding(16.dp)
-            )
         }
     }
 }

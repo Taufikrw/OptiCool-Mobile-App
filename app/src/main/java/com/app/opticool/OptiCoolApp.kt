@@ -37,14 +37,17 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.app.opticool.ui.ViewModelFactory
 import com.app.opticool.ui.components.BottomBar
 import com.app.opticool.ui.components.FeatureBanner
 import com.app.opticool.ui.navigation.NavigationItem
 import com.app.opticool.ui.navigation.Screen
+import com.app.opticool.ui.screen.DetailScreen
 import com.app.opticool.ui.screen.HomeScreen
 import com.app.opticool.ui.screen.RecommendViewModel
 import com.app.opticool.ui.theme.interFontFamily
@@ -56,7 +59,7 @@ fun OptiCoolApp(
     navController: NavHostController = rememberNavController()
 ) {
     Scaffold(
-        bottomBar = { BottomBar() }
+        bottomBar = { BottomBar(navController) }
     ) { innerPadding ->
         val recommendViewModel: RecommendViewModel = viewModel(
             factory = ViewModelFactory.getInstance(LocalContext.current)
@@ -67,13 +70,35 @@ fun OptiCoolApp(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Home.route) {
+                recommendViewModel.getEyeglasses()
                 HomeScreen(
                     uiState = recommendViewModel.eyeglassesState,
                     retryAction = recommendViewModel::getEyeglasses,
                     modifier = Modifier
-                        .background(Color.White)
+                        .background(Color.White),
+                    navigateToDetail = { id ->
+                        navController.navigate(Screen.DetailEyeglasses.createRoute(id))
+                    }
                 )
             }
+           composable(
+               route = Screen.DetailEyeglasses.route,
+               arguments = listOf(navArgument("id") {
+                   type = NavType.IntType
+               })
+           ) {
+               val id = it.arguments?.getInt("id") ?: -1
+               recommendViewModel.getDetail(id)
+               DetailScreen(
+                   uiState = recommendViewModel.detailState,
+                   retryAction = { id ->
+                       recommendViewModel.getDetail(id)
+                   },
+                   navigateBack = {
+                       navController.navigateUp()
+                   },
+               )
+           }
 //            composable(Screen.Wishlist.route) {
 //                WishlistScreen(
 //                    navigationToDetail = { id ->

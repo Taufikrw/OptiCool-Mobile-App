@@ -11,6 +11,10 @@ class EyeglassRepository(
         return apiService.getEyeglasses()
     }
 
+    suspend fun getDetail(id: Int): EyeglassesResponseItem {
+        return apiService.getDetailEyeglass(id)
+    }
+
     companion object {
         @Volatile
         private var instance: EyeglassRepository? = null
