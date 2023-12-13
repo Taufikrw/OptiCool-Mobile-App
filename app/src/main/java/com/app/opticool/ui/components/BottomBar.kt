@@ -10,17 +10,24 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.app.opticool.ui.navigation.NavigationItem
 import com.app.opticool.ui.navigation.Screen
 
 @Composable
 fun BottomBar(
+    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     NavigationBar(
         modifier = modifier
     ) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
         val navigationItems = listOf(
             NavigationItem(
                 title = "Home",
@@ -59,8 +66,16 @@ fun BottomBar(
                 label = {
                     Text(it.title)
                 },
-                selected = it.title == navigationItems[0].title,
-                onClick = {}
+                selected = currentRoute == it.screen.route,
+                onClick = {
+                    navController.navigate(it.screen.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        restoreState = true
+                        launchSingleTop = true
+                    }
+                }
             )
         }
     }

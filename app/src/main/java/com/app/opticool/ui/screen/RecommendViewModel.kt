@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.opticool.data.EyeglassRepository
+import com.app.opticool.ui.common.EyeglassState
 import com.app.opticool.ui.common.EyeglassesState
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -17,9 +18,8 @@ class RecommendViewModel(
     var eyeglassesState: EyeglassesState by mutableStateOf(EyeglassesState.Loading)
         private set
 
-    init {
-        getEyeglasses()
-    }
+    var detailState: EyeglassState by mutableStateOf(EyeglassState.Loading)
+        private set
 
     fun getEyeglasses() {
         viewModelScope.launch {
@@ -32,6 +32,19 @@ class RecommendViewModel(
                 EyeglassesState.Error
             } catch (e: HttpException) {
                 EyeglassesState.Error
+            }
+        }
+    }
+
+    fun getDetail(id: Int) {
+        viewModelScope.launch {
+            detailState = try {
+                val result = repository.getDetail(id)
+                EyeglassState.Success(result)
+            } catch (e: Exception) {
+                EyeglassState.Error
+            } catch (e: HttpException) {
+                EyeglassState.Error
             }
         }
     }
