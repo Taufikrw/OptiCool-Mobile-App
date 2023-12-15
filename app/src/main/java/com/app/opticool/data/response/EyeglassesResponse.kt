@@ -46,6 +46,9 @@ data class EyeglassesResponseItem(
 	@field:SerializedName("FrameColour")
 	val frameColour: String,
 
+	@field:SerializedName("FrameMaterial")
+	val frameMaterial: String,
+
 	@field:SerializedName("Link")
 	val link: String
 )

@@ -25,7 +25,7 @@ class RecommendViewModel(
         viewModelScope.launch {
             eyeglassesState = try {
                 val result = repository.getEyeglasses().filter {
-                    it.faceShape == "oval"
+                    it.faceShape == "heart"
                 }.take(5)
                 EyeglassesState.Success(result)
             } catch (e: Exception) {
