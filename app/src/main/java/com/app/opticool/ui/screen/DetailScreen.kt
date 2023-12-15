@@ -3,12 +3,14 @@ package com.app.opticool.ui.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -126,8 +128,56 @@ fun DetailScreen(
                         fontWeight = FontWeight.Light,
                         fontSize = 36.sp
                     )
+                    Text(
+                        text = "Deskripsi Produk",
+                        fontFamily = interFontFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        modifier = Modifier
+                            .padding(top = 20.dp)
+                    )
+                    DescItem(title = "Brand", item = eyeglass.brand)
+                    DescItem(title = "Gender", item = eyeglass.gender)
+                    DescItem(title = "Bentuk", item = eyeglass.frameShape)
+                    DescItem(title = "Style", item = eyeglass.frameStyle)
+                    DescItem(title = "Bahan", item = eyeglass.frameMaterial)
+                    DescItem(title = "Warna", item = eyeglass.frameColour)
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .padding(top = 35.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Button(onClick = {}) {
+                            Text(text = "Order")
+                        }
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun DescItem(
+    title: String,
+    item: String,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = title,
+            fontFamily = interFontFamily,
+            fontSize = 14.sp
+        )
+        Text(
+            text = item,
+            fontFamily = interFontFamily,
+            fontSize = 14.sp
+        )
     }
 }
