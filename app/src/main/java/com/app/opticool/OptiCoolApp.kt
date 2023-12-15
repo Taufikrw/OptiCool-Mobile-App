@@ -97,6 +97,8 @@ fun OptiCoolApp(
                    navigateBack = {
                        navController.navigateUp()
                    },
+                   modifier = Modifier
+                       .background(Color.White),
                )
            }
 //            composable(Screen.Wishlist.route) {
