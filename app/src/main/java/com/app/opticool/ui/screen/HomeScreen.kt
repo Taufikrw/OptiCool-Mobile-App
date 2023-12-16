@@ -117,7 +117,7 @@ fun HomeContent(
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     contentPadding = PaddingValues(16.dp),
-                    modifier = modifier
+                    modifier = Modifier
                         .background(Color(0xFFF5F5F5))
                 ) {
                     items(items = eyeglasses, key = { it.idEyeglass }) {

@@ -2,6 +2,7 @@ package com.app.opticool.data
 
 import android.util.Log
 import com.app.opticool.data.response.EyeglassesResponseItem
+import com.app.opticool.data.response.LoginResponse
 import com.app.opticool.data.retrofit.ApiService
 
 class EyeglassRepository(
@@ -13,6 +14,11 @@ class EyeglassRepository(
 
     suspend fun getDetail(id: Int): EyeglassesResponseItem {
         return apiService.getDetailEyeglass(id)
+    }
+
+    suspend fun login(email: String, password: String): LoginResponse {
+        Log.d("TEST MASUK", "MASUK REPO")
+        return apiService.login(email, password)
     }
 
     companion object {

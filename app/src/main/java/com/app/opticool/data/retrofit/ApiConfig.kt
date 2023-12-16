@@ -17,7 +17,7 @@ object ApiConfig {
         val authInterceptor = Interceptor {
             val req = it.request()
             val requestHeaders = req.newBuilder()
-                .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZnVsbE5hbWUiOiJ0ZXMiLCJpYXQiOjE3MDI2MjMxNjUsImV4cCI6MTcwMjYyNjc2NX0.grZJFFTwXfa1GTmPfDOuDQ7fxhEnQ_y8O3kgUgekT4s")
+                .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZnVsbE5hbWUiOiJ0ZXMiLCJpYXQiOjE3MDI2MzYyOTF9.MlCCJqlUtqznSqMLg1Zt4cdRxINGgjQ_-nZ-Nm9k3yk")
                 .build()
             it.proceed(requestHeaders)
         }
