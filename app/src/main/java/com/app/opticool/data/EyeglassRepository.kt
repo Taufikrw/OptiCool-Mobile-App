@@ -30,6 +30,10 @@ class EyeglassRepository(
 
     fun getSession(): Flow<String> = userPreferences.getLoginToken()
 
+    suspend fun destroyToken() {
+        userPreferences.destroyToken()
+    }
+
     companion object {
         @Volatile
         private var instance: EyeglassRepository? = null

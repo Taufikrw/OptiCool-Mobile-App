@@ -28,10 +28,8 @@ class RecommendViewModel(
                     it.faceShape == "heart"
                 }.take(5)
                 EyeglassesState.Success(result)
-            } catch (e: Exception) {
-                EyeglassesState.Error
             } catch (e: HttpException) {
-                EyeglassesState.Error
+                EyeglassesState.Error(e.message.toString())
             }
         }
     }

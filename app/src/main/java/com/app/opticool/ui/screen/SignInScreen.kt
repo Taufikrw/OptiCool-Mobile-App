@@ -59,10 +59,7 @@ fun SignInScreen(
     modifier: Modifier = Modifier
 ) {
     if (uiState is LoginState.Success) {
-        LaunchedEffect(uiState) {
-            saveSession(uiState.user.token)
-            onLoginSuccess()
-        }
+        saveSession(uiState.user.token)
     } else if (uiState is LoginState.Error) {
         Toast.makeText(LocalContext.current, "Login Gagal", Toast.LENGTH_SHORT).show()
     }

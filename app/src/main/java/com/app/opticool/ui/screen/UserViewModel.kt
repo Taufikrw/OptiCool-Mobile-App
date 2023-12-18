@@ -34,11 +34,13 @@ class UserViewModel(
         }
     }
 
-    fun saveToken(token: String) {
-        viewModelScope.launch {
-            repository.saveToken(token)
-        }
-    }
+    suspend fun saveToken(token: String) = repository.saveToken(token)
 
     fun getToken(): LiveData<String> = repository.getSession().asLiveData()
+
+    fun logout() {
+        viewModelScope.launch {
+            repository.destroyToken()
+        }
+    }
 }
