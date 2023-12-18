@@ -4,9 +4,13 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.opticool.data.EyeglassRepository
+import com.app.opticool.data.model.Login
 import com.app.opticool.ui.common.LoginState
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -17,20 +21,24 @@ class UserViewModel(
     var userState: LoginState by mutableStateOf(LoginState.Loading)
         private set
 
-    fun login(email: String, password: String) {
-        Log.d("TEST MASUK", "MASUK VM")
+    fun login(user: Login) {
         viewModelScope.launch {
             userState = try {
-                val result = repository.login(email, password)
-                Log.d("TEST MASUK", result.toString())
+                val result = repository.login(user)
                 LoginState.Success(result)
             } catch (e: Exception) {
-                Log.d("TEST MASUK E", e.toString())
                 LoginState.Error
             } catch (e: HttpException) {
-                Log.d("TEST MASUK EH", e.toString())
                 LoginState.Error
             }
         }
     }
+
+    fun saveToken(token: String) {
+        viewModelScope.launch {
+            repository.saveToken(token)
+        }
+    }
+
+    fun getToken(): LiveData<String> = repository.getSession().asLiveData()
 }

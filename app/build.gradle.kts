@@ -82,4 +82,11 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+
+    // Data Store
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    // LiveData
+    implementation("androidx.compose.runtime:runtime-livedata")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
 }
