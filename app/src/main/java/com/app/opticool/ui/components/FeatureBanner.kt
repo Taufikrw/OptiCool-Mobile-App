@@ -1,5 +1,6 @@
 package com.app.opticool.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,9 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.app.opticool.R
 import com.app.opticool.ui.theme.interFontFamily
 
 @Composable
@@ -55,12 +58,10 @@ fun FeatureBanner(
             modifier = Modifier.weight(1f)
         )
         Spacer(modifier = Modifier.width(15.dp))
-        Icon(
-            imageVector = Icons.Rounded.AddCircle,
-            contentDescription = "Add",
-            tint = Color(0xFF00DFA2),
-            modifier = Modifier
-                .size(65.dp)
+        Image(
+            painter = painterResource(id = R.drawable.scan_banner),
+            contentDescription = "scan_banner",
+            modifier = Modifier.size(65.dp)
         )
     }
 }
