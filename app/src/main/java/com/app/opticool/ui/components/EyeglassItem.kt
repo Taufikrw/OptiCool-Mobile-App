@@ -36,8 +36,7 @@ fun EyeglassItem(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier
-            .width(190.dp),
+        modifier = modifier,
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White

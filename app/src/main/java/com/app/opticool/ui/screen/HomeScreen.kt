@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -148,9 +149,11 @@ fun HomeContent(
                             name = it.name,
                             price = it.price,
                             image = it.linkPic1,
-                            modifier = Modifier.clickable {
-                                navigateToDetail(it.idEyeglass)
-                            }
+                            modifier = Modifier
+                                .width(190.dp)
+                                .clickable {
+                                    navigateToDetail(it.idEyeglass)
+                                }
                         )
                     }
                 }

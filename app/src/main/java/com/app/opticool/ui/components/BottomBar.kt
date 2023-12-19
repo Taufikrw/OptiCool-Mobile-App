@@ -65,7 +65,7 @@ fun BottomBar(
             screen = Screen.Scan
         ),
         NavigationItem(
-            title = "Order",
+            title = "Wishlist",
             icon = Icons.Rounded.Favorite,
             screen = Screen.Wishlist
         ),
