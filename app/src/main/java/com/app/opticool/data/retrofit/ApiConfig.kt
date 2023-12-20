@@ -1,6 +1,8 @@
 package com.app.opticool.data.retrofit
 
+import android.util.Log
 import com.app.opticool.BuildConfig
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -8,7 +10,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiConfig {
-    fun getApiService(token: String): ApiService {
+    private var authToken: String = ""
+
+    fun setAuthToken(token: String) {
+        authToken = token
+    }
+
+    fun getApiService(): ApiService {
         val loggingInterceptor = if(BuildConfig.DEBUG) {
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         } else {
@@ -17,7 +25,7 @@ object ApiConfig {
         val authInterceptor = Interceptor {
             val req = it.request()
             val requestHeaders = req.newBuilder()
-                .addHeader("Authorization", "Bearer $token")
+                .addHeader("Authorization", "Bearer $authToken")
                 .build()
             it.proceed(requestHeaders)
         }
