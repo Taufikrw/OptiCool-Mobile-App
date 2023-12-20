@@ -20,9 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.app.opticool.data.response.EyeglassesResponseItem
 import com.app.opticool.ui.common.EyeglassesState
+import com.app.opticool.ui.components.CustomSearchBar
 import com.app.opticool.ui.components.EyeglassItem
 import com.app.opticool.ui.components.LoadingScreen
-import com.app.opticool.ui.components.SearchBar
 
 @Composable
 fun SearchScreen(
@@ -54,7 +54,9 @@ fun SearchContent(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        topBar = {}
+        topBar = {
+            CustomSearchBar(query = "", onChangeQuery = {})
+        }
     ) { innerPadding ->
         LazyVerticalGrid(
             columns = GridCells.Adaptive(160.dp),
