@@ -11,7 +11,9 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.opticool.data.EyeglassRepository
 import com.app.opticool.data.model.Login
+import com.app.opticool.data.model.Register
 import com.app.opticool.ui.common.LoginState
+import com.app.opticool.ui.common.RegisterState
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
@@ -19,6 +21,9 @@ class UserViewModel(
     private val repository: EyeglassRepository
 ): ViewModel() {
     var userState: LoginState by mutableStateOf(LoginState.Loading)
+        private set
+
+    var newUserState: RegisterState by mutableStateOf(RegisterState.Loading)
         private set
 
     fun login(user: Login) {
@@ -41,6 +46,17 @@ class UserViewModel(
     fun logout() {
         viewModelScope.launch {
             repository.destroyToken()
+        }
+    }
+
+    fun register(user: Register) {
+        viewModelScope.launch {
+            newUserState = try {
+                val result = repository.register(user)
+                RegisterState.Success(result)
+            } catch (e: Exception) {
+                RegisterState.Error(e.message.toString())
+            }
         }
     }
 }

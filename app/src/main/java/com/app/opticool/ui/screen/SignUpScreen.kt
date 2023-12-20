@@ -1,5 +1,6 @@
 package com.app.opticool.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,25 +14,52 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.app.opticool.data.model.Register
+import com.app.opticool.ui.common.LoginState
+import com.app.opticool.ui.common.RegisterState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(
-    navController: NavController
+    uiState: RegisterState,
+    navigateToSigIn: () -> Unit,
+    onRegisterClicked: (Register) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    val emailValue = remember { mutableStateOf("") }
-    val fullNameValue = remember { mutableStateOf("") }
-    val phoneValue = remember { mutableStateOf("") }
-    val passwordValue = remember { mutableStateOf("") }
+    if (uiState is RegisterState.Success) {
+        Toast.makeText(LocalContext.current, "Login berhasil kamu bisa kembali ke halaman login", Toast.LENGTH_SHORT).show()
+    } else if (uiState is RegisterState.Error) {
+        Toast.makeText(LocalContext.current, "Login Gagal", Toast.LENGTH_SHORT).show()
+    }
+
+    SignUpForm(
+        onRegisterClicked = onRegisterClicked,
+        navigateToSigIn = navigateToSigIn
+    )
+}
+
+@Composable
+fun SignUpForm(
+    navigateToSigIn: () -> Unit,
+    onRegisterClicked: (Register) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var fullNameValue by remember { mutableStateOf("") }
+    var emailValue by remember { mutableStateOf("") }
+    var phoneValue by remember { mutableStateOf("") }
+    var passwordValue by remember { mutableStateOf("") }
 
     Box(
         contentAlignment = Alignment.Center,
@@ -54,43 +82,49 @@ fun SignUpScreen(
             )
             Spacer(modifier = Modifier.height(70.dp))
             OutlinedTextField(
-                value = fullNameValue.value,
-                onValueChange = { fullNameValue.value = it },
+                value = fullNameValue,
+                onValueChange = { fullNameValue = it },
                 label = { Text(text = "Full Name") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
-                value = emailValue.value,
-                onValueChange = { emailValue.value = it },
+                value = emailValue,
+                onValueChange = { emailValue = it },
                 label = { Text(text = "Email") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
-                value = phoneValue.value,
-                onValueChange = { phoneValue.value = it },
+                value = phoneValue,
+                onValueChange = { phoneValue = it },
                 label = { Text(text = "Phone Number") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
-                value = passwordValue.value,
-                onValueChange = { passwordValue.value = it },
+                value = passwordValue,
+                onValueChange = { passwordValue = it },
                 label = { Text(text = "Password") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(60.dp))
             Button(
-                onClick = { navController.navigate("home") },
-//            { viewModel.login(emailValue.value, passwordValue.value) },
+                onClick = { onRegisterClicked(
+                    Register(
+                        fullName = fullNameValue,
+                        email = emailValue,
+                        phoneNumber = phoneValue,
+                        password = passwordValue
+                    )
+                )},
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "Sign Up")
             }
             OutlinedButton(
-                onClick = { navController.navigate("signin") },
+                onClick = { navigateToSigIn() },
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
