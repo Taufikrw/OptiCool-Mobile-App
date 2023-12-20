@@ -68,9 +68,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    // Material
-    implementation("com.google.android.material:material:1.9.0")
-
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
@@ -92,4 +89,7 @@ dependencies {
     // LiveData
     implementation("androidx.compose.runtime:runtime-livedata")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+
+    // Splash
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }
