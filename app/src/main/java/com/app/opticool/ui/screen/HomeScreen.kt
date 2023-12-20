@@ -48,6 +48,7 @@ fun HomeScreen(
     uiState: EyeglassesState,
     retryAction: () -> Unit,
     navigateToDetail: (Int) -> Unit,
+    navigateToSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     when (uiState) {
@@ -55,7 +56,8 @@ fun HomeScreen(
         is EyeglassesState.Success -> HomeContent(
             eyeglasses = uiState.eyeglass,
             modifier = modifier.fillMaxWidth(),
-            navigateToDetail = navigateToDetail
+            navigateToDetail = navigateToDetail,
+            navigateToSearch = navigateToSearch
         )
         is EyeglassesState.Error -> ErrorScreen(
             message = uiState.error,
@@ -91,7 +93,8 @@ fun ErrorScreen(
 fun HomeContent(
     modifier: Modifier = Modifier,
     eyeglasses: List<EyeglassesResponseItem>,
-    navigateToDetail: (Int) -> Unit
+    navigateToDetail: (Int) -> Unit,
+    navigateToSearch: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -157,7 +160,12 @@ fun HomeContent(
                         )
                     }
                 }
-                SearchBanner()
+                SearchBanner(
+                    modifier = Modifier
+                        .clickable {
+                            navigateToSearch()
+                        }
+                )
                 Text(
                     text = "Berdasarkan bentuk wajah",
                     fontFamily = interFontFamily,

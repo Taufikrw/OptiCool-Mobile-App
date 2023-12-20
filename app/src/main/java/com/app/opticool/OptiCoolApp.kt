@@ -1,5 +1,7 @@
 package com.app.opticool
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -107,6 +110,7 @@ fun OptiCoolApp(
                         navigateToDetail = { id ->
                             navController.navigate(Screen.DetailEyeglasses.createRoute(id))
                         },
+                        navigateToSearch = { navController.navigate(Screen.Search.route) },
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
