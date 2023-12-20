@@ -1,9 +1,11 @@
 package com.app.opticool.data.retrofit
 
 import com.app.opticool.data.model.Login
+import com.app.opticool.data.model.Register
 import com.app.opticool.data.response.EyeglassesResponse
 import com.app.opticool.data.response.EyeglassesResponseItem
 import com.app.opticool.data.response.LoginResponse
+import com.app.opticool.data.response.RegisterResponse
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -25,4 +27,9 @@ interface ApiService {
     suspend fun login(
         @Body user: Login
     ): LoginResponse
+
+    @POST("register")
+    suspend fun register(
+        @Body user: Register
+    ): RegisterResponse
 }

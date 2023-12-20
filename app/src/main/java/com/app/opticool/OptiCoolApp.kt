@@ -91,7 +91,9 @@ fun OptiCoolApp(
             }
             composable(Screen.SignUp.route) {
                 SignUpScreen(
-                    navController = navController
+                    uiState = userViewModel.newUserState,
+                    onRegisterClicked = { userViewModel.register(it) },
+                    navigateToSigIn = { navController.navigate("signin") }
                 )
             }
         }
