@@ -39,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -70,7 +71,7 @@ fun PreviewTakenImage(
     onBackClick: () -> Unit,
     onCancel: () -> Unit
 ){
-    var idFace by rememberSaveable { mutableStateOf("")    }
+    var idFace by rememberSaveable { mutableStateOf("")  }
 
     // Compress the image file
     val compressedPhoto: File? by remember(photo) {
@@ -120,11 +121,14 @@ fun PreviewTakenImage(
                 Image(
                     painter = rememberAsyncImagePainter(photoUri),
                     contentDescription = stringResource(R.string.pti_note),
-                    contentScale = ContentScale.FillBounds,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(500.dp)
-                        .clip(RoundedCornerShape(16.dp)),
+                        .clip(RoundedCornerShape(16.dp))
+                        .graphicsLayer(
+                            scaleX = -1f,  // Flip the image horizontally
+                        ),  // Flip the image horizontally,
 
                 )
             }
