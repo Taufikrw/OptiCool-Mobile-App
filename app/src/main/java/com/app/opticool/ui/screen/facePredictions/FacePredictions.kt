@@ -1,4 +1,4 @@
-package com.app.opticool.ui.screen
+package com.app.opticool.ui.screen.facePredictions
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,6 +15,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,33 +28,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.opticool.R
 import com.app.opticool.data.response.EyeglassesResponseItem
-import com.app.opticool.ui.ViewModelFactory
 import com.app.opticool.ui.common.EyeglassesState
 import com.app.opticool.ui.components.EyeglassItem
 import com.app.opticool.ui.components.FeatureBanner
 import com.app.opticool.ui.components.LoadingScreen
+import com.app.opticool.ui.components.PredictionsBanner
 import com.app.opticool.ui.components.SearchBanner
+import com.app.opticool.ui.screen.ErrorScreen
+import com.app.opticool.ui.screen.HomeContent
+import com.app.opticool.ui.screen.RecommendViewModel
 import com.app.opticool.ui.theme.interFontFamily
 
 @Composable
-fun HomeScreen(
+fun FacePredictionsScreen(
     uiState: EyeglassesState,
     retryAction: (String) -> Unit,
     navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier
-) {
+){
     when (uiState) {
         is EyeglassesState.Loading -> LoadingScreen()
-        is EyeglassesState.Success -> HomeContent(
+        is EyeglassesState.Success -> FacePredictionsContent(
             eyeglasses = uiState.eyeglass,
             modifier = modifier.fillMaxWidth(),
             navigateToDetail = navigateToDetail
@@ -62,6 +65,7 @@ fun HomeScreen(
             modifier = modifier.fillMaxSize()
         )
     }
+
 }
 
 @Composable
@@ -85,85 +89,37 @@ fun ErrorScreen(
     }
 }
 
+@Composable
+fun FacePredictionsEXP(
+    faceShape: String
+) {
+    PredictionsBanner(faceShape = faceShape)
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeContent(
+fun FacePredictionsContent(
     modifier: Modifier = Modifier,
     eyeglasses: List<EyeglassesResponseItem>,
     navigateToDetail: (Int) -> Unit
-) {
-    Scaffold(
-        topBar = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .height(64.dp)
-                    .fillMaxWidth()
-                    .shadow(elevation = 5.dp)
-                    .background(color = Color.White)
-                    .padding(16.dp)
-            ) {
-                Text(
-                    text = "Hello, Coolers!",
-                    fontFamily = interFontFamily,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 20.sp,
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.logo_opticool),
-                    contentDescription = "logo",
-                    modifier = Modifier
-                        .size(39.dp)
-                )
-            }
-        },
-    ) { innerPadding ->
-        LazyColumn(
-            modifier = modifier
-                .padding(innerPadding)
-        ) {
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                FeatureBanner(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                )
-                Text(
-                    text = "Rekomendasi Untukmu",
-                    fontFamily = interFontFamily,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier
-                        .padding(16.dp)
-                )
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    contentPadding = PaddingValues(16.dp),
-                    modifier = Modifier
-                        .background(Color(0xFFF5F5F5))
-                ) {
-                    items(items = eyeglasses, key = { it.idEyeglass }) {
-                        EyeglassItem(
-                            name = it.name,
-                            price = it.price,
-                            image = it.linkPic1,
-                            modifier = Modifier.clickable {
-                                navigateToDetail(it.idEyeglass)
-                            }
-                        )
-                    }
-                }
-                SearchBanner()
-                Text(
-                    text = "Berdasarkan bentuk wajah",
-                    fontFamily = interFontFamily,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier
-                        .padding(16.dp)
-                )
-            }
+){
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2) ,
+        contentPadding = PaddingValues(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier
+            .padding(16.dp)
+    ){
+        items(items = eyeglasses, key = { it.idEyeglass}){
+            EyeglassItem(
+                name = it.name,
+                price = it.price,
+                image = it.linkPic1,
+                modifier = Modifier.clickable {
+                    navigateToDetail(it.idEyeglass)
+                })
         }
     }
 }
+

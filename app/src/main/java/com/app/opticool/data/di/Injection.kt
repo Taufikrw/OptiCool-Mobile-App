@@ -1,7 +1,6 @@
 package com.app.opticool.data.di
 
 import android.content.Context
-import android.util.Log
 import com.app.opticool.data.EyeglassRepository
 import com.app.opticool.data.preferences.UserPreferences
 import com.app.opticool.data.preferences.dataStore
@@ -13,8 +12,7 @@ object Injection {
     fun provideRepository(context: Context): EyeglassRepository = runBlocking {
         val pref = UserPreferences.getInstance(context.dataStore)
         val user = pref.getLoginToken().first()
-        ApiConfig.setAuthToken(user)
-        val apiService = ApiConfig.getApiService()
+        val apiService = ApiConfig.getApiService(user)
         EyeglassRepository.getInstance(apiService, pref)
     }
 }

@@ -11,4 +11,9 @@ sealed class Screen(val route: String) {
     }
     object SignUp: Screen("signup")
     object SignIn: Screen("signin")
+    object PreviewTakenImage : Screen("previewTakenImage")
+    object TakeImage : Screen("takeImage")
+    object FacePredictions : Screen("previewTakenImage/{faceShape}") {
+        fun createRoute(faceShape: String) = "previewTakenImage/$faceShape"
+    }
 }

@@ -2,11 +2,9 @@ package com.app.opticool.data
 
 import android.util.Log
 import com.app.opticool.data.model.Login
-import com.app.opticool.data.model.Register
 import com.app.opticool.data.preferences.UserPreferences
 import com.app.opticool.data.response.EyeglassesResponseItem
 import com.app.opticool.data.response.LoginResponse
-import com.app.opticool.data.response.RegisterResponse
 import com.app.opticool.data.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
 
@@ -34,10 +32,6 @@ class EyeglassRepository(
 
     suspend fun destroyToken() {
         userPreferences.destroyToken()
-    }
-
-    suspend fun register(user: Register): RegisterResponse {
-        return apiService.register(user)
     }
 
     companion object {
