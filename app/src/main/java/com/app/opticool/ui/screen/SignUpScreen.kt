@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.app.opticool.data.model.Register
-import com.app.opticool.ui.common.LoginState
 import com.app.opticool.ui.common.RegisterState
 
 @OptIn(ExperimentalMaterial3Api::class)

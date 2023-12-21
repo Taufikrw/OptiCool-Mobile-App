@@ -2,4 +2,18 @@
     <string name="app_name">OptiCool</string>
     <string name="price_tag">Rp. %s</string>
     <string name="match_shape">It\'s match for %s Shape</string>
+    <string name="your_face_preview">Berikut adalah gambar wajahmu</string>
+    <string name="pti_note">Note: Dengan menekan tombol continue anda dapat melihat bentuk wajah anda dengan menggunakan teknologi AI</string>
+    <string name="btn_cancel">Cancel</string>
+
+    <!-- String for Detect Screen -->
+    <string name="oc_icon">Take Picture</string>
+
+    <!-- String for PreviewTakenImage -->
+    <string name="pti_photo_desc">Preview Taken Image</string>
+    <string name="pti_cancel">Cancel</string>
+    <string name="pti_continue">Continue</string>
+    <string name="pti_success">Gambar berhasil diunggah!</string>
+
+
 </resources>
