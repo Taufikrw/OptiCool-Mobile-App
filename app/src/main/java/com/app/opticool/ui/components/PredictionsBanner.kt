@@ -1,6 +1,7 @@
 package com.app.opticool.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,26 +28,21 @@ fun PredictionsBanner(
     faceShape: String,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .height(170.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
             .background(Color(0xFFFFFFFF))
-            .padding(horizontal = 20.dp)
+            .padding(20.dp)
     ) {
         Text(
             text = "Your Face is $faceShape",
             fontFamily = interFontFamily,
-            fontSize = 40.sp,
+            fontSize = 30.sp,
             fontWeight = FontWeight.Medium,
-            color = Color.Black,
-            modifier = Modifier
-                .weight(1f)
-                .align(Alignment.CenterVertically)
+            color = Color.Black
         )
-        Spacer(modifier = Modifier.width(15.dp))
     }
 }
 

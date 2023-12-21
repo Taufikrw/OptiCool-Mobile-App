@@ -26,7 +26,7 @@ class RecommendViewModel(
             eyeglassesState = try {
                 val result = repository.getEyeglasses().filter {
                     it.faceShape == faceShape
-                }.take(5)
+                }.take(6)
                 EyeglassesState.Success(result)
             } catch (e: HttpException) {
                 EyeglassesState.Error(e.message.toString())
