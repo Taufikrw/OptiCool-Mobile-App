@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.opticool.data.EyeglassRepository
 import com.app.opticool.data.di.Injection
+import com.app.opticool.ui.screen.EyeglassViewModel
 import com.app.opticool.ui.screen.RecommendViewModel
 import com.app.opticool.ui.screen.UserViewModel
 
@@ -15,6 +16,8 @@ class ViewModelFactory(private val repository: EyeglassRepository): ViewModelPro
             return RecommendViewModel(repository) as T
         } else if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
             return UserViewModel(repository) as T
+        } else if (modelClass.isAssignableFrom(EyeglassViewModel::class.java)) {
+            return EyeglassViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

@@ -1,9 +1,11 @@
 package com.app.opticool.data.retrofit
 
 import com.app.opticool.data.model.Login
+import com.app.opticool.data.model.Register
 import com.app.opticool.data.response.CreateFacePredictResponse
 import com.app.opticool.data.response.EyeglassesResponseItem
 import com.app.opticool.data.response.LoginResponse
+import com.app.opticool.data.response.RegisterResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -27,6 +29,11 @@ interface ApiService {
     suspend fun login(
         @Body user: Login
     ): LoginResponse
+
+    @POST("register")
+    suspend fun register(
+        @Body user: Register
+    ): RegisterResponse
 
     @Multipart
     @POST("predict")

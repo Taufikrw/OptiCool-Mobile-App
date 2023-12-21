@@ -12,7 +12,8 @@ object Injection {
     fun provideRepository(context: Context): EyeglassRepository = runBlocking {
         val pref = UserPreferences.getInstance(context.dataStore)
         val user = pref.getLoginToken().first()
-        val apiService = ApiConfig.getApiService(user)
+        ApiConfig.setAuthToken(user)
+        val apiService = ApiConfig.getApiService()
         EyeglassRepository.getInstance(apiService, pref)
     }
 }

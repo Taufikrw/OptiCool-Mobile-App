@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -65,7 +66,7 @@ fun BottomBar(
             screen = Screen.Scan
         ),
         NavigationItem(
-            title = "Order",
+            title = "Wishlist",
             icon = Icons.Rounded.Favorite,
             screen = Screen.Wishlist
         ),
@@ -81,10 +82,7 @@ fun BottomBar(
             .background(Color.White)
             .fillMaxWidth()
             .padding(10.dp),
-        horizontalArrangement = Arrangement.spacedBy(
-            space = 15.dp,
-            alignment = Alignment.CenterHorizontally
-        ),
+        horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
         navigationItems.forEachIndexed { index, item ->
@@ -93,6 +91,7 @@ fun BottomBar(
                     painterResource(id = R.drawable.ic_scan), contentDescription = null,
                     tint = Color(0xFF00DFA2),
                     modifier = Modifier
+                        .size(60.dp)
                         .clickable {
                             navController.navigate(item.screen.route) {
                                 popUpTo(navController.graph.findStartDestination().id) {

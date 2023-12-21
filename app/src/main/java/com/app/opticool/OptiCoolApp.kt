@@ -2,8 +2,10 @@ package com.app.opticool
 
 import android.os.Handler
 import android.os.Looper
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -17,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -32,9 +35,11 @@ import com.app.opticool.ui.ViewModelFactory
 import com.app.opticool.ui.components.BottomBar
 import com.app.opticool.ui.navigation.Screen
 import com.app.opticool.ui.screen.DetailScreen
+import com.app.opticool.ui.screen.EyeglassViewModel
 import com.app.opticool.ui.screen.HomeScreen
 import com.app.opticool.ui.screen.ProfileScreen
 import com.app.opticool.ui.screen.RecommendViewModel
+import com.app.opticool.ui.screen.SearchScreen
 import com.app.opticool.ui.screen.SignInScreen
 import com.app.opticool.ui.screen.SignUpScreen
 import com.app.opticool.ui.screen.UserViewModel
@@ -61,10 +66,13 @@ fun OptiCoolApp(
     var capturedImage by remember { mutableStateOf<File?>(null) }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    val recommendViewModel: RecommendViewModel = viewModel(
+    val eyeglassViewModel: EyeglassViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context)
     )
     val userViewModel: UserViewModel = viewModel(
+        factory = ViewModelFactory.getInstance(context)
+    )
+    val recommendViewModel: RecommendViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context)
     )
 
@@ -111,7 +119,9 @@ fun OptiCoolApp(
             }
             composable(Screen.SignUp.route) {
                 SignUpScreen(
-                    navController = navController
+                    uiState = userViewModel.newUserState,
+                    onRegisterClicked = { userViewModel.register(it) },
+                    navigateToSigIn = { navController.navigate("signin") }
                 )
             }
         }
@@ -120,16 +130,17 @@ fun OptiCoolApp(
             route = "content"
         ) {
             composable(Screen.Home.route) {
-                recommendViewModel.getEyeglasses("oval")
+                eyeglassViewModel.getRecommendation()
                 Scaffold(
                     bottomBar = { BottomBar(navController = navController) }
                 ) { innerPadding ->
                     HomeScreen(
-                        uiState = recommendViewModel.eyeglassesState,
-                        retryAction = recommendViewModel::getEyeglasses,
+                        uiState = eyeglassViewModel.eyeglassesState,
+                        retryAction = eyeglassViewModel::getRecommendation,
                         navigateToDetail = { id ->
                             navController.navigate(Screen.DetailEyeglasses.createRoute(id))
                         },
+                        navigateToSearch = { navController.navigate(Screen.Search.route) },
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -141,14 +152,14 @@ fun OptiCoolApp(
                 })
             ) {
                 val id = it.arguments?.getInt("id") ?: -1
-                recommendViewModel.getDetail(id)
+                eyeglassViewModel.getDetail(id)
                 Scaffold(
                     bottomBar = { BottomBar(navController = navController) }
                 ) { innerPadding ->
                     DetailScreen(
-                        uiState = recommendViewModel.detailState,
+                        uiState = eyeglassViewModel.detailState,
                         retryAction = { id ->
-                            recommendViewModel.getDetail(id)
+                            eyeglassViewModel.getDetail(id)
                         },
                         navigateBack = {
                             navController.navigateUp()
@@ -158,8 +169,33 @@ fun OptiCoolApp(
                 }
             }
             composable(Screen.Search.route) {
-                Button(onClick = { navController.navigate("home") }) {
-                    Text(text = "Click")
+                eyeglassViewModel.getEyeglasses()
+                Scaffold(
+                    bottomBar = { BottomBar(navController = navController) }
+                ) { innerPadding ->
+                    SearchScreen(
+                        uiState = eyeglassViewModel.eyeglassesState,
+                        retryAction = eyeglassViewModel::getEyeglasses,
+                        navigateToDetail = { id ->
+                            navController.navigate(Screen.DetailEyeglasses.createRoute(id))
+                        },
+                        modifier = Modifier
+                            .padding(innerPadding)
+                    )
+                }
+            }
+            composable(Screen.Wishlist.route) {
+                Scaffold(
+                    bottomBar = { BottomBar(navController = navController) }
+                ) { innerPadding ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(text = "Under Construction")
+                    }
                 }
             }
             composable(Screen.Profile.route) {
@@ -231,14 +267,8 @@ fun OptiCoolApp(
                             .height(20.dp))
                     }
                 }
-
-
             }
-
         }
-
     }
-
-
 }
 

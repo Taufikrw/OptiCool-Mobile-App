@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -45,8 +46,9 @@ import com.app.opticool.ui.theme.interFontFamily
 @Composable
 fun HomeScreen(
     uiState: EyeglassesState,
-    retryAction: (String) -> Unit,
+    retryAction: () -> Unit,
     navigateToDetail: (Int) -> Unit,
+    navigateToSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     when (uiState) {
@@ -54,11 +56,12 @@ fun HomeScreen(
         is EyeglassesState.Success -> HomeContent(
             eyeglasses = uiState.eyeglass,
             modifier = modifier.fillMaxWidth(),
-            navigateToDetail = navigateToDetail
+            navigateToDetail = navigateToDetail,
+            navigateToSearch = navigateToSearch
         )
         is EyeglassesState.Error -> ErrorScreen(
             message = uiState.error,
-            retryAction = { retryAction("heart") },
+            retryAction = retryAction,
             modifier = modifier.fillMaxSize()
         )
     }
@@ -67,7 +70,7 @@ fun HomeScreen(
 @Composable
 fun ErrorScreen(
     message: String,
-    retryAction: (String) -> Unit,
+    retryAction: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -79,7 +82,7 @@ fun ErrorScreen(
             painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = ""
         )
         Text(text = message, modifier = Modifier.padding(16.dp))
-        Button(onClick = { retryAction("heart") }) {
+        Button(onClick = retryAction) {
             Text("retry")
         }
     }
@@ -90,7 +93,8 @@ fun ErrorScreen(
 fun HomeContent(
     modifier: Modifier = Modifier,
     eyeglasses: List<EyeglassesResponseItem>,
-    navigateToDetail: (Int) -> Unit
+    navigateToDetail: (Int) -> Unit,
+    navigateToSearch: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -148,13 +152,20 @@ fun HomeContent(
                             name = it.name,
                             price = it.price,
                             image = it.linkPic1,
-                            modifier = Modifier.clickable {
-                                navigateToDetail(it.idEyeglass)
-                            }
+                            modifier = Modifier
+                                .width(190.dp)
+                                .clickable {
+                                    navigateToDetail(it.idEyeglass)
+                                }
                         )
                     }
                 }
-                SearchBanner()
+                SearchBanner(
+                    modifier = Modifier
+                        .clickable {
+                            navigateToSearch()
+                        }
+                )
                 Text(
                     text = "Berdasarkan bentuk wajah",
                     fontFamily = interFontFamily,

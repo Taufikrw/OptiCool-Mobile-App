@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
@@ -63,6 +64,8 @@ fun DetailScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val uriHandler = LocalUriHandler.current
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -151,7 +154,9 @@ fun DetailScreen(
                             .padding(top = 35.dp)
                             .fillMaxWidth()
                     ) {
-                        Button(onClick = {}) {
+                        Button(onClick = {
+                            uriHandler.openUri(eyeglass.link)
+                        }) {
                             Text(text = "Order")
                         }
                     }
