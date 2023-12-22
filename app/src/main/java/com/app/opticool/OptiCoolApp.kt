@@ -179,6 +179,8 @@ fun OptiCoolApp(
                         navigateToDetail = { id ->
                             navController.navigate(Screen.DetailEyeglasses.createRoute(id))
                         },
+                        query = eyeglassViewModel.query.value,
+                        onChangeQuery = eyeglassViewModel::search,
                         modifier = Modifier
                             .padding(innerPadding)
                     )
