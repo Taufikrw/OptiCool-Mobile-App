@@ -17,7 +17,7 @@ this is [OptiCool](https://github.com/Capstone-OptiCool/Mobile-App) MD Repositor
 
 ## Preview
 ### 📹 Demo Video
-You can watch in [here](https://youtu.be/jMA1oR8WTnQ) on youtube
+You can watch in [here](http://youtube.com/watch?v=TDS-ORCqNqE) on youtube
 
 ### 📱 Screenshots
 <div>
