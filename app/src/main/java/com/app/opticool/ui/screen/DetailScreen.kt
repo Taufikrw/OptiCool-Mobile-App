@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.app.opticool.R
 import com.app.opticool.data.response.EyeglassesResponseItem
+import com.app.opticool.helper.formatPrice
 import com.app.opticool.ui.common.EyeglassState
 import com.app.opticool.ui.components.LoadingScreen
 import com.app.opticool.ui.theme.interFontFamily
@@ -128,7 +129,7 @@ fun DetailScreen(
                     )
                     Text(
                         text = stringResource(
-                            R.string.price_tag, eyeglass.price
+                            R.string.price_tag, formatPrice(eyeglass.price)
                         ),
                         fontFamily = interFontFamily,
                         fontWeight = FontWeight.Light,

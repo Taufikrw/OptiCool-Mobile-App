@@ -38,3 +38,8 @@ fun compressImage(file: File?): File? {
 
     return compressedFile
 }
+
+fun formatPrice(price: String): String {
+    val formatter = java.text.DecimalFormat("#,###")
+    return formatter.format(price.toLong())
+}
