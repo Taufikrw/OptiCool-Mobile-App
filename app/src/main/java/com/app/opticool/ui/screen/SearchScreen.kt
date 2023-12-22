@@ -28,6 +28,8 @@ fun SearchScreen(
     uiState: EyeglassesState,
     retryAction: () -> Unit,
     navigateToDetail: (Int) -> Unit,
+    query: String,
+    onChangeQuery: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     when (uiState) {
@@ -35,7 +37,9 @@ fun SearchScreen(
         is EyeglassesState.Success -> SearchContent(
             eyeglasses = uiState.eyeglass,
             modifier = modifier.fillMaxWidth(),
-            navigateToDetail = navigateToDetail
+            navigateToDetail = navigateToDetail,
+            query = query,
+            onChangeQuery = onChangeQuery
         )
         is EyeglassesState.Error -> ErrorScreen(
             message = uiState.error,
@@ -50,11 +54,13 @@ fun SearchScreen(
 fun SearchContent(
     eyeglasses: List<EyeglassesResponseItem>,
     navigateToDetail: (Int) -> Unit,
+    query: String,
+    onChangeQuery: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
         topBar = {
-            CustomSearchBar(query = "", onChangeQuery = {})
+            CustomSearchBar(query = query, onChangeQuery = onChangeQuery)
         }
     ) { innerPadding ->
         LazyVerticalGrid(
