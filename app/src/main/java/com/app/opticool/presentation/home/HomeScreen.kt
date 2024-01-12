@@ -1,4 +1,4 @@
-package com.app.opticool.ui.screen
+package com.app.opticool.presentation.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,16 +26,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.opticool.R
 import com.app.opticool.data.response.EyeglassesResponseItem
-import com.app.opticool.ui.ViewModelFactory
 import com.app.opticool.ui.common.EyeglassesState
 import com.app.opticool.ui.components.EyeglassItem
 import com.app.opticool.ui.components.FeatureBanner
@@ -51,19 +47,23 @@ fun HomeScreen(
     navigateToSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    when (uiState) {
-        is EyeglassesState.Loading -> LoadingScreen()
-        is EyeglassesState.Success -> HomeContent(
-            eyeglasses = uiState.eyeglass,
-            modifier = modifier.fillMaxWidth(),
-            navigateToDetail = navigateToDetail,
-            navigateToSearch = navigateToSearch
-        )
-        is EyeglassesState.Error -> ErrorScreen(
-            message = uiState.error,
-            retryAction = retryAction,
-            modifier = modifier.fillMaxSize()
-        )
+    uiState.let { state ->
+        when (state) {
+            is EyeglassesState.Loading -> LoadingScreen()
+
+            is EyeglassesState.Success -> HomeContent(
+                eyeglasses = state.eyeglass,
+                modifier = modifier.fillMaxWidth(),
+                navigateToDetail = navigateToDetail,
+                navigateToSearch = navigateToSearch
+            )
+
+            is EyeglassesState.Error -> ErrorScreen(
+                message = state.error,
+                retryAction = retryAction,
+                modifier = modifier.fillMaxSize()
+            )
+        }
     }
 }
 

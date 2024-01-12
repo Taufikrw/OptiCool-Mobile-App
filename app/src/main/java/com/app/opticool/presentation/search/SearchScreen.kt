@@ -1,4 +1,4 @@
-package com.app.opticool.ui.screen
+package com.app.opticool.presentation.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,12 +12,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.app.opticool.data.response.EyeglassesResponseItem
+import com.app.opticool.presentation.home.ErrorScreen
 import com.app.opticool.ui.common.EyeglassesState
 import com.app.opticool.ui.components.CustomSearchBar
 import com.app.opticool.ui.components.EyeglassItem

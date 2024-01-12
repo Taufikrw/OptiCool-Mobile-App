@@ -8,11 +8,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -34,22 +35,24 @@ import androidx.navigation.navigation
 import com.app.opticool.ui.ViewModelFactory
 import com.app.opticool.ui.components.BottomBar
 import com.app.opticool.ui.navigation.Screen
-import com.app.opticool.ui.screen.DetailScreen
-import com.app.opticool.ui.screen.EyeglassViewModel
-import com.app.opticool.ui.screen.HomeScreen
-import com.app.opticool.ui.screen.ProfileScreen
-import com.app.opticool.ui.screen.RecommendViewModel
-import com.app.opticool.ui.screen.SearchScreen
-import com.app.opticool.ui.screen.SignInScreen
-import com.app.opticool.ui.screen.SignUpScreen
-import com.app.opticool.ui.screen.UserViewModel
-import com.app.opticool.ui.screen.facePredictions.FacePredictionsEXP
-import com.app.opticool.ui.screen.facePredictions.FacePredictionsScreen
-import com.app.opticool.ui.screen.postToModel.DetectScreen
-import com.app.opticool.ui.screen.postToModel.PostToModelViewModel
-import com.app.opticool.ui.screen.postToModel.PreviewTakenImage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
+import com.app.opticool.presentation.detail.DetailScreen
+import com.app.opticool.presentation.detail.DetailViewModel
+import com.app.opticool.presentation.home.HomeScreen
+import com.app.opticool.presentation.home.HomeViewModel
+import com.app.opticool.ui.common.EyeglassState
+import com.app.opticool.ui.common.EyeglassesState
+import com.app.opticool.presentation.profile.ProfileScreen
+import com.app.opticool.presentation.RecommendViewModel
+import com.app.opticool.presentation.search.SearchScreen
+import com.app.opticool.presentation.search.SearchViewModel
+import com.app.opticool.presentation.signin.SignInScreen
+import com.app.opticool.presentation.signup.SignUpScreen
+import com.app.opticool.presentation.UserViewModel
+import com.app.opticool.presentation.facePredictions.FacePredictionsEXP
+import com.app.opticool.presentation.facePredictions.FacePredictionsScreen
+import com.app.opticool.presentation.postToModel.DetectScreen
+import com.app.opticool.presentation.postToModel.PostToModelViewModel
+import com.app.opticool.presentation.postToModel.PreviewTakenImage
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Locale
@@ -66,9 +69,6 @@ fun OptiCoolApp(
     var capturedImage by remember { mutableStateOf<File?>(null) }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    val eyeglassViewModel: EyeglassViewModel = viewModel(
-        factory = ViewModelFactory.getInstance(context)
-    )
     val userViewModel: UserViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context)
     )
@@ -130,13 +130,18 @@ fun OptiCoolApp(
             route = "content"
         ) {
             composable(Screen.Home.route) {
-                eyeglassViewModel.getRecommendation()
+                val viewModel: HomeViewModel = viewModel(
+                    factory = ViewModelFactory.getInstance(context)
+                )
+                LaunchedEffect(Unit) {
+                    viewModel.getRecommendation()
+                }
                 Scaffold(
                     bottomBar = { BottomBar(navController = navController) }
                 ) { innerPadding ->
                     HomeScreen(
-                        uiState = eyeglassViewModel.eyeglassesState,
-                        retryAction = eyeglassViewModel::getRecommendation,
+                        uiState = viewModel.uiState.collectAsState(initial = EyeglassesState.Loading).value,
+                        retryAction = viewModel::getRecommendation,
                         navigateToDetail = { id ->
                             navController.navigate(Screen.DetailEyeglasses.createRoute(id))
                         },
@@ -152,14 +157,19 @@ fun OptiCoolApp(
                 })
             ) {
                 val id = it.arguments?.getInt("id") ?: -1
-                eyeglassViewModel.getDetail(id)
+                val viewModel: DetailViewModel = viewModel(
+                    factory = ViewModelFactory.getInstance(context)
+                )
+                LaunchedEffect(Unit) {
+                    viewModel.getDetail(id)
+                }
                 Scaffold(
                     bottomBar = { BottomBar(navController = navController) }
                 ) { innerPadding ->
                     DetailScreen(
-                        uiState = eyeglassViewModel.detailState,
+                        uiState = viewModel.uiState.collectAsState(initial = EyeglassState.Loading).value,
                         retryAction = { id ->
-                            eyeglassViewModel.getDetail(id)
+                            viewModel.getDetail(id)
                         },
                         navigateBack = {
                             navController.navigateUp()
@@ -169,18 +179,23 @@ fun OptiCoolApp(
                 }
             }
             composable(Screen.Search.route) {
-                eyeglassViewModel.getEyeglasses()
+                val viewModel: SearchViewModel = viewModel(
+                    factory = ViewModelFactory.getInstance(context)
+                )
+                LaunchedEffect(Unit) {
+                    viewModel.getAllEyeglasses()
+                }
                 Scaffold(
                     bottomBar = { BottomBar(navController = navController) }
                 ) { innerPadding ->
                     SearchScreen(
-                        uiState = eyeglassViewModel.eyeglassesState,
-                        retryAction = eyeglassViewModel::getEyeglasses,
+                        uiState = viewModel.uiState.collectAsState(initial = EyeglassesState.Loading).value,
+                        retryAction = viewModel::getAllEyeglasses,
                         navigateToDetail = { id ->
                             navController.navigate(Screen.DetailEyeglasses.createRoute(id))
                         },
-                        query = eyeglassViewModel.query.value,
-                        onChangeQuery = eyeglassViewModel::search,
+                        query = viewModel.query.value,
+                        onChangeQuery = viewModel::searchEyeglasses,
                         modifier = Modifier
                             .padding(innerPadding)
                     )

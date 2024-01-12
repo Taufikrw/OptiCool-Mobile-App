@@ -9,17 +9,32 @@ import com.app.opticool.data.response.LoginResponse
 import com.app.opticool.data.response.RegisterResponse
 import com.app.opticool.data.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 class EyeglassRepository(
     private val apiService: ApiService,
     private val userPreferences: UserPreferences
 ) {
+    suspend fun getAllEyeglasses(): Flow<List<EyeglassesResponseItem>?> {
+        return try {
+            val result = apiService.getEyeglasses()
+            flowOf(result)
+        } catch (t: Throwable) {
+            flowOf(null)
+        }
+    }
+
     suspend fun getEyeglasses(): List<EyeglassesResponseItem> {
         return apiService.getEyeglasses()
     }
 
-    suspend fun getDetail(id: Int): EyeglassesResponseItem {
-        return apiService.getDetailEyeglass(id)
+    suspend fun getDetail(id: Int): Flow<EyeglassesResponseItem?> {
+        return try {
+            val result = apiService.getDetailEyeglass(id)
+            flowOf(result)
+        } catch (t: Throwable) {
+            flowOf(null)
+        }
     }
 
     suspend fun login(user: Login): LoginResponse {

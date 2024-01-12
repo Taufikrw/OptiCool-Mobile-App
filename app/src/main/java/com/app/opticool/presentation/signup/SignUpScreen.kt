@@ -1,4 +1,4 @@
-package com.app.opticool.ui.screen
+package com.app.opticool.presentation.signup
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -29,7 +29,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.app.opticool.data.model.Register
 import com.app.opticool.ui.common.RegisterState
 

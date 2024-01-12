@@ -1,10 +1,8 @@
-package com.app.opticool.ui.screen
+package com.app.opticool.presentation.detail
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,7 +24,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,15 +42,17 @@ fun DetailScreen(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    when (uiState) {
-        is EyeglassState.Loading -> LoadingScreen()
-        is EyeglassState.Success -> DetailScreen(
-            eyeglass = uiState.eyeglass,
-            onBackClick = navigateBack,
-            modifier = modifier.fillMaxWidth()
-        )
-        is EyeglassState.Error -> {
-            Text(text = "ERROR")
+    uiState.let { state ->
+        when (state) {
+            is EyeglassState.Loading -> LoadingScreen()
+            is EyeglassState.Success -> DetailScreen(
+                eyeglass = state.eyeglass,
+                onBackClick = navigateBack,
+                modifier = modifier.fillMaxWidth()
+            )
+            is EyeglassState.Error -> {
+                Text(text = "ERROR")
+            }
         }
     }
 }

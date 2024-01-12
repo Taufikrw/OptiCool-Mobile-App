@@ -1,4 +1,4 @@
-package com.app.opticool.ui.screen.postToModel
+package com.app.opticool.presentation.postToModel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
